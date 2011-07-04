@@ -100,7 +100,8 @@ void draw() {
     //image(differenceFrame, 0, 0, width, height);
     drawTargets();
     drawBlobs();
-    sendData();
+    lightData();
+    soundData();
     newFrame = false;
   }
 }

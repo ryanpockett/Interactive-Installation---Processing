@@ -9,6 +9,7 @@ Server myServer;
 
  int x = 0;
  int y = 0;
+ int gain = -40;
  int activeLight = 0;
  int[] system = new int[3];
  String[] computer = new String[3];
@@ -32,6 +33,13 @@ void setup()
   arduino.pinMode(7, Arduino.OUTPUT);
   //END Arduino
   
+  //Minim
+  minim = new Minim(this);
+  player = minim.loadFile("Radiata_Intense.mp3");
+  player.loop();
+  player.setGain(gain);
+  //END Minim
+  
  system[0] = 12;
  system[1] = 10;
  system[2] = 8;
@@ -48,6 +56,7 @@ void draw(){
     lightON();
     firstLight = true;
   }
+  getSounds();
   // Get the next available client
   Client thisClient = myServer.available();
 

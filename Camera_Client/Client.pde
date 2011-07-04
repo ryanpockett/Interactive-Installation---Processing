@@ -3,8 +3,9 @@
 
 boolean cleared = true;
 boolean changed = false;
+boolean[]soundCheck = new boolean [4];
 
-void sendData () {
+void lightData () {
   float activeTargetDistance = updateTargets();
   if (activeTargetDistance < 20 && activeTargetDistance > 0 && !changed) {
     cleared = false;
@@ -14,5 +15,23 @@ void sendData () {
    myClient.write("cleared");
    cleared = true;
    changed = false;
+  } 
+}
+
+void soundData () {
+  
+  float activeTargetDistance = updateTargets();
+  int i = 0;
+  //soundCheck[i] = false;
+  if (activeTargetDistance < 60 && activeTargetDistance > 50 && !soundCheck[i]) {
+      
+      myClient.write("gain+");
+      soundCheck[i] = true;    
+      
+  } else if (activeTargetDistance > 59 && soundCheck[i]){
+    
+   myClient.write("gain-");
+   soundCheck[i] = false; 
+   
   } 
 }
