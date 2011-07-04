@@ -63,7 +63,7 @@ void setup() {
   
     myClient = new Client(this, "10.0.0.82", 10001); 
   // Say hello
-  myClient.write("MacBook Pro Work is connected.");
+  myClient.write("iMac is connected.");
 }
 
 // if any key is pressed save the current video frame as background image (to be subtracted)
@@ -132,7 +132,7 @@ float updateTargets() {
     activeTarget.active = true;
     //if you want to know the distance from blob to currently active target, 
     //get it here: e.g. float distance2map = activeTarget.closestBlobDistance;
-    println(activeTarget.closestBlobDistance);
+    //println(activeTarget.closestBlobDistance);
     return activeTarget.closestBlobDistance;
     } else {
       return 0;

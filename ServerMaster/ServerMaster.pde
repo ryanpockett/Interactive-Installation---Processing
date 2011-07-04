@@ -13,6 +13,8 @@ Server myServer;
  int[] system = new int[3];
  String[] computer = new String[3];
  boolean firstLight = false;
+ 
+ boolean[] endGame = new boolean[3];
 
 void setup()
 {
@@ -35,12 +37,11 @@ void setup()
  system[2] = 8;
  
  computer[0] = "10.0.0.82";
- computer[1] = "10.0.0.88";
- computer[2] = "10.0.0.89";
+ computer[1] = "10.0.0.6";
+ computer[2] = "10.0.0.7";
 }
 
-void draw()
-{
+void draw(){
   if (!firstLight){
     delay(2000);
     println("First Light Activated");
@@ -58,12 +59,57 @@ void draw()
     
     if (thisClient.ip().equals(computer[activeLight])){
     //String whatClientSaid = thisClient.readString();
-    if (whatClientSaid != null) {
-      println(thisClient.ip() + ": " + whatClientSaid);
-      if (whatClientSaid.equals("change")){
-        changeLights();
-      }
-    }
+      if (whatClientSaid != null) {
+        println(thisClient.ip() + ": " + whatClientSaid);
+         if (whatClientSaid.equals("change")){
+           println("Changed lights for" + thisClient.ip());
+          changeLights();
+          //Sets active IP to True in the endGame array when target is occupied
+          for (int i=0; i<3; i++){
+            if(thisClient.ip().equals(computer[i])){
+              endGame[i] = true;
+              println("End Game activated for " + thisClient.ip());
+            }
+          }
+        }
+        
+      } 
     } 
+    if(whatClientSaid !=null) {
+      if(whatClientSaid.equals("change")){
+          for (int i=0; i<3; i++){
+            if(thisClient.ip().equals(computer[i])){
+              endGame[i] = true;
+              println("End Game activated for " + thisClient.ip());
+            }
+          }
+      }
+      if (whatClientSaid.equals("cleared")){
+          //Sets active IP to False in the endGame array when target clears
+          for (int i=0; i<3; i++){
+            if(thisClient.ip().equals(computer[i])){
+              endGame[i] = false;
+              println("End Game deactived for " + thisClient.ip());
+            }
+          }
+        }
+    }
+  }
+  
+  endGame();
+}
+
+void endGame() {
+  if (endGame[0] && endGame[1] && endGame[2]){
+   println("WINNER WINNER CHICKEN DINNER");
+  lightOFF();
+  
+  for (int i=0; i<3; i++){
+    endGame[i] = false;
+  }
+  
+  activeLight = 0;
+  firstLight = false;
+  
   } 
 }
