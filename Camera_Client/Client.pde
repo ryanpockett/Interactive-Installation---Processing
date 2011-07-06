@@ -11,9 +11,9 @@ void lightData (float activeTargetDistance) {
   if (activeTargetDistance < 20 && activeTargetDistance > 0 && !changed) {
     cleared = false;
     changed = true;
-    myClient.write("change");
+    myClient.write("change\n");
   }else if (activeTargetDistance > 20 && !cleared){
-   myClient.write("cleared");
+   myClient.write("cleared\n");
    cleared = true;
    changed = false;
   } 
@@ -22,7 +22,7 @@ void lightData (float activeTargetDistance) {
 void soundData (float activeTargetDistance) {
   if (activeTargetDistance < high && activeTargetDistance > low && !soundCheck[i]) {
       
-      myClient.write("gain+");
+      myClient.write("gain+\n");
       soundCheck[i] = true;
       //myClient.write("soundcheck["+i+"]:" + soundCheck[i]);
       high = high - 20;
@@ -37,7 +37,7 @@ void soundData (float activeTargetDistance) {
     if (soundCheck[i-1]){
        i--; 
        //myClient.write("i: " + i);
-       myClient.write("gain-");
+       myClient.write("gain-\n");
        soundCheck[i] = false;
        //myClient.write("soundcheck["+i+"]:" + soundCheck[i]);
        high = high + 20;

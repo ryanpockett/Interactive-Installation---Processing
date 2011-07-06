@@ -25,10 +25,6 @@ void getSounds(Client thisClient, String whatClientSaid){
           player.shiftGain(gain, gain-20 , 2000);
           gain = gain - 20;
         
-        }else if (whatClientSaid.equals("change")){
-          println("reached YO MOMMA");
-          player.shiftGain(gain, -40 , 5000);
-          gain = -40;
         }
       } 
     }

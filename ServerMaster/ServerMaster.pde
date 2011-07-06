@@ -48,7 +48,7 @@ void setup()
  
  computer[0] = "10.0.0.9";
  computer[1] = "10.0.0.12";
- computer[2] = "10.0.0.7";
+ computer[2] = "10.0.0.12";
 }
 
 void draw(){
@@ -63,13 +63,23 @@ void draw(){
   // Get the next available client
   Client thisClient = myServer.available();
   if (thisClient !=null) {
-    String whatClientSaid = thisClient.readString();
-    //Run game commands
-    checkLights(thisClient, whatClientSaid);
-    getSounds(thisClient, whatClientSaid);
-    endGame(thisClient, whatClientSaid);
-  
+      String clientCommands = thisClient.readString();
+      if (clientCommands != null) {
+        String[] commands = split(trim(clientCommands), '\n');
+        int commandIndex;
+        for (commandIndex = 0; commandIndex < commands.length; commandIndex++) {
+          doCommand(thisClient, commands[commandIndex]);
+        }
+
+      }
   }
+}
+
+
+void doCommand(Client thisClient, String command) {
+  checkLights(thisClient, command);
+  getSounds(thisClient, command);
+  endGame(thisClient, command);
 }
   
 
