@@ -61,7 +61,7 @@ void setup() {
   // t index 0
   //targets[numTargets++] = new Target(width/2, height/2, 120, 60);
   
-    myClient = new Client(this, "10.0.0.82", 10001); 
+    myClient = new Client(this, "10.0.0.9", 10001); 
   // Say hello
   myClient.write("iMac is connected.");
 }
@@ -93,15 +93,15 @@ void captureEvent(Capture capture) {
 void draw() {
   if (newFrame) {
     updateBlobs();
-    updateTargets();
+    float activeTargetDistance = updateTargets();
     //////// to display the difference frame
     image(differenceFrame, 0, 0, width, height);
     //////// to display the current frame
     //image(differenceFrame, 0, 0, width, height);
     drawTargets();
     drawBlobs();
-    lightData();
-    soundData();
+    lightData(activeTargetDistance);
+    soundData(activeTargetDistance);
     newFrame = false;
   }
 }

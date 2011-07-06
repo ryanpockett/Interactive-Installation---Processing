@@ -36,54 +36,45 @@ void setup()
   //Minim
   minim = new Minim(this);
   player = minim.loadFile("Radiata_Intense.mp3");
+  player2 = minim.loadFile("Corona_Radiata.wav");
   player.loop();
   player.setGain(gain);
+  player2.play();
   //END Minim
   
  system[0] = 12;
  system[1] = 10;
  system[2] = 8;
  
- computer[0] = "10.0.0.82";
- computer[1] = "10.0.0.6";
+ computer[0] = "10.0.0.9";
+ computer[1] = "10.0.0.12";
  computer[2] = "10.0.0.7";
 }
 
 void draw(){
+  
   if (!firstLight){
     delay(2000);
     println("First Light Activated");
     lightON();
     firstLight = true;
   }
-  getSounds();
+  
   // Get the next available client
   Client thisClient = myServer.available();
-
-  // If the client is not null, and says something, display what it said
   if (thisClient !=null) {
-    
     String whatClientSaid = thisClient.readString();
-    println(thisClient.ip() + ": " + whatClientSaid);
-    
-    if (thisClient.ip().equals(computer[activeLight])){
-    //String whatClientSaid = thisClient.readString();
-      if (whatClientSaid != null) {
-        println(thisClient.ip() + ": " + whatClientSaid);
-         if (whatClientSaid.equals("change")){
-           println("Changed lights for" + thisClient.ip());
-          changeLights();
-          //Sets active IP to True in the endGame array when target is occupied
-          for (int i=0; i<3; i++){
-            if(thisClient.ip().equals(computer[i])){
-              endGame[i] = true;
-              println("End Game activated for " + thisClient.ip());
-            }
-          }
-        }
-        
-      } 
-    } 
+    //Run game commands
+    checkLights(thisClient, whatClientSaid);
+    getSounds(thisClient, whatClientSaid);
+    endGame(thisClient, whatClientSaid);
+  
+  }
+}
+  
+
+void endGame(Client thisClient, String whatClientSaid) {
+if (thisClient !=null) {
     if(whatClientSaid !=null) {
       if(whatClientSaid.equals("change")){
           for (int i=0; i<3; i++){
@@ -102,13 +93,9 @@ void draw(){
             }
           }
         }
-    }
-  }
-  
-  endGame();
+    }  
 }
-
-void endGame() {
+  
   if (endGame[0] && endGame[1] && endGame[2]){
    println("WINNER WINNER CHICKEN DINNER");
   lightOFF();
@@ -121,4 +108,11 @@ void endGame() {
   firstLight = false;
   
   } 
+}
+
+void stop() {
+  player.close();
+  player2.close();
+  minim.stop();
+  super.stop();
 }

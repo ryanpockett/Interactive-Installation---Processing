@@ -33,3 +33,31 @@ void lightOFF() {
   arduino.digitalWrite(system[activeLight]-1, Arduino.LOW);
   delay(200);
 }
+
+void checkLights (Client thisClient, String whatClientSaid){
+  
+   if (thisClient !=null) {
+    if (thisClient.ip().equals(computer[activeLight])){
+
+      if (whatClientSaid != null) {
+        
+        println(thisClient.ip() + ": " + whatClientSaid);
+        
+         if (whatClientSaid.equals("change")){
+           println("Changed lights for: " + thisClient.ip());
+          changeLights();
+          
+          //Sets active IP to True in the endGame array when target is occupied
+          for (int i=0; i<3; i++){
+            if(thisClient.ip().equals(computer[i])){
+              endGame[i] = true;
+              println("End Game activated for " + thisClient.ip());
+            }
+          }
+        }
+        
+      } 
+    }
+  }  
+  
+}

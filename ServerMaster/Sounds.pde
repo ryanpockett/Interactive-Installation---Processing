@@ -5,29 +5,32 @@ import ddf.minim.effects.*;
 
 Minim minim;
 AudioPlayer player;
+AudioPlayer player2;
 
-void getSounds(){
-  
-  Client thisClient = myServer.available();
-  
+void getSounds(Client thisClient, String whatClientSaid){
   
   if (thisClient !=null) {
-    String whatClientSaid = thisClient.readString();
-    if(whatClientSaid !=null) {
     
-    if (whatClientSaid.equals("gain+")){
-      println("reached gain+");
-      gain = gain + 80;
-      player.shiftGain(-40, gain, 2000);
+    if (thisClient.ip().equals(computer[activeLight])){
       
-    }else if (whatClientSaid.equals("gain-")){
-      println("reached gain-");
+      if(whatClientSaid !=null) {
+    
+        if (whatClientSaid.equals("gain+")){
+          // println("reached gain+");
+          gain = gain + 20;
+          player.shiftGain(gain-20, gain, 2000);
       
-     player.shiftGain(gain, -40 , 2000);
-      gain = gain - 80;
+        }else if (whatClientSaid.equals("gain-")){
+          //println("reached gain-");
+          player.shiftGain(gain, gain-20 , 2000);
+          gain = gain - 20;
+        
+        }else if (whatClientSaid.equals("change")){
+          println("reached YO MOMMA");
+          player.shiftGain(gain, -40 , 5000);
+          gain = -40;
+        }
+      } 
     }
-    
   } 
-  }
-  
 }
